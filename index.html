@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>RNG Timer</title>
+<body>
+  <div>
+    <h1>Gen 5</h1>
+    Calibration <input id="gen-5-calibration-input" type="number" oninput="updateGen5TotalTime()" value=-71 /><br>
+    Target Seconds <input id="gen-5-target-seconds-input" type="number" oninput="updateGen5TotalTime()" value=50 /><br>
+    <h2 id="gen-5-time-remaining">00:00</h2>
+    Minutes Before Target: <span id="gen-5-minutes-before">0</span><br><br>
+    Second Hit <input id="gen-5-second-hit-input" type="number" /><br>
+    <button id="gen-5-start-button" onclick="gen5Timer.toggle()">Start</button>
+    <button id="gen-5-update-button" onclick="updateGen5Calibration()">Update</button><br>
+  </div>
+  <div>
+    <h1>Gen 4</h1>
+    Calibrated Delay <input id="gen-4-calibrated-delay-input" type="number" oninput="updateGen4Times()" value=500 /><br>
+    Calibrated Seconds <input id="gen-4-calibrated-seconds-input" type="number" oninput="updateGen4Times()" value=14 /><br>
+    Target Delay <input id="gen-4-target-delay-input" type="number" oninput="updateGen4Times()" value=3000 /><br>
+    Target Seconds <input id="gen-4-target-seconds-input" type="number" oninput="updateGen4Times()" value=50 /><br>
+    <h2 id="gen-4-time-remaining-1">00:00</h2>
+    <h3 id="gen-4-time-remaining-2">00:00</h3>
+    Minutes Before Target: <span id="gen-4-minutes-before">0</span><br><br>
+    Delay Hit <input id="gen-4-delay-hit-input" type="number" /><br>
+    <button id="gen-4-start-button" onclick="toggleGen4Timers()">Start</button>
+    <button id="gen-4-update-button" onclick="updateGen4Calibration()">Update</button>
+  </div>
+  <div>
+    <h3>Options</h3>
+    <input type="checkbox" id="countdown-checkbox" checked onclick="updateCountdownOptions()"></input>
+    Play a <select id="sound-type-dropdown">
+      <option value="tick">tick</option>
+      <option value="beep">beep</option>
+      <option value="pop">pop</option>
+      <option value="ding">ding</option>
+    </select>
+    sound
+    <input type="number" id="num-sounds-input" style="width:3em;" value=6 />
+    times at an interval of
+    <input type="number" id="sounds-interval-input" style="width:3em;" value=500>
+    milliseconds as the timer expires
+  </div>
+  <script type="text/javascript" src="https://cdn.rawgit.com/turuslan/HackTimer/5c86bde027e6a328fafc53ed18bdcf1f66be00bc/HackTimer.min.js?raw=true"></script>
+  <script type="text/javascript" src="timer.js"></script>
+</body>
