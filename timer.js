@@ -193,7 +193,7 @@ function toMs (ms) {
 }
 
 function getGen5Time (calibration, targetSec) {
-  return 1000 * (targetSec + toMs(calibration)) + 200;
+  return 1000 * targetSec + toMs(1000 * calibration) + 200;
 }
 
 function getGen5CalibrationOffset (targetSec, result) {
