@@ -1,33 +1,33 @@
 'use strict';
 
-const FPS = 59.8261;
-const TICK_MS = 10;
-const MINIMUM_TIME_MS = 14000;
-const ONE_MINUTE_MS = 60000;
+var FPS = 59.8261;
+var TICK_MS = 10;
+var MINIMUM_TIME_MS = 14000;
+var ONE_MINUTE_MS = 60000;
 
-const gen5CalibrationInput = document.getElementById('gen-5-calibration-input');
-const gen5TargetSecondsInput = document.getElementById('gen-5-target-seconds-input');
-const gen5SecondHitInput = document.getElementById('gen-5-second-hit-input');
-const gen5StartButton = document.getElementById('gen-5-start-button');
-const gen5TimeRemaining = document.getElementById('gen-5-time-remaining');
-const gen5MinutesBefore = document.getElementById('gen-5-minutes-before');
+var gen5CalibrationInput = document.getElementById('gen-5-calibration-input');
+var gen5TargetSecondsInput = document.getElementById('gen-5-target-seconds-input');
+var gen5SecondHitInput = document.getElementById('gen-5-second-hit-input');
+var gen5StartButton = document.getElementById('gen-5-start-button');
+var gen5TimeRemaining = document.getElementById('gen-5-time-remaining');
+var gen5MinutesBefore = document.getElementById('gen-5-minutes-before');
 
-const gen4CalibratedDelayInput = document.getElementById('gen-4-calibrated-delay-input');
-const gen4CalibratedSecondsInput = document.getElementById('gen-4-calibrated-seconds-input');
-const gen4TargetDelayInput = document.getElementById('gen-4-target-delay-input');
-const gen4TargetSecondsInput = document.getElementById('gen-4-target-seconds-input');
-const gen4DelayHitInput = document.getElementById('gen-4-delay-hit-input');
-const gen4StartButton = document.getElementById('gen-4-start-button');
-const gen4TimeRemaining1 = document.getElementById('gen-4-time-remaining-1');
-const gen4TimeRemaining2 = document.getElementById('gen-4-time-remaining-2');
-const gen4MinutesBefore = document.getElementById('gen-4-minutes-before');
+var gen4CalibratedDelayInput = document.getElementById('gen-4-calibrated-delay-input');
+var gen4CalibratedSecondsInput = document.getElementById('gen-4-calibrated-seconds-input');
+var gen4TargetDelayInput = document.getElementById('gen-4-target-delay-input');
+var gen4TargetSecondsInput = document.getElementById('gen-4-target-seconds-input');
+var gen4DelayHitInput = document.getElementById('gen-4-delay-hit-input');
+var gen4StartButton = document.getElementById('gen-4-start-button');
+var gen4TimeRemaining1 = document.getElementById('gen-4-time-remaining-1');
+var gen4TimeRemaining2 = document.getElementById('gen-4-time-remaining-2');
+var gen4MinutesBefore = document.getElementById('gen-4-minutes-before');
 
-const countdownCheckbox = document.getElementById('countdown-checkbox');
-const soundTypeDropdown = document.getElementById('sound-type-dropdown');
-const numSoundsInput = document.getElementById('num-sounds-input');
-const soundsIntervalInput = document.getElementById('sounds-interval-input');
+var countdownCheckbox = document.getElementById('countdown-checkbox');
+var soundTypeDropdown = document.getElementById('sound-type-dropdown');
+var numSoundsInput = document.getElementById('num-sounds-input');
+var soundsIntervalInput = document.getElementById('sounds-interval-input');
 
-const audios = {
+var audios = {
   tick: new Audio('tick.wav'),
   beep: new Audio('beep.wav'),
   pop: new Audio('pop.wav'),
@@ -35,7 +35,7 @@ const audios = {
 };
 
 function zeroPadNum (num, length) {
-  const str = num + '';
+  var str = num + '';
   return str.length >= length ? str : ('0'.repeat(length) + str).slice(-length);
 }
 
@@ -43,7 +43,7 @@ function getFormattedTime (ms) {
   return zeroPadNum(Math.floor(ms / 1000), 2) + ':' + zeroPadNum(Math.floor(ms % 1000 / TICK_MS), 2);
 }
 
-const noop = () => {};
+var noop = function () {};
 
 class Timer {
   constructor (opts) {
@@ -69,14 +69,14 @@ class Timer {
       this._stopPoint = Date.now() + this._totalTime;
       this._audioTimers = [];
       if (countdownCheckbox.checked) {
-        for (let i = 0; i < numSoundsInput.value; i++) {
-          this._audioTimers.push(setTimeout(() => {
+        for (var i = 0; i < numSoundsInput.value; i++) {
+          this._audioTimers.push(setTimeout(function () {
             audios[soundTypeDropdown.value].play();
           }, this._totalTime - i * soundsIntervalInput.value));
         }
       }
-      this._intervalTimer = setInterval(() => this._tick(), TICK_MS);
-      this._stopTimer = setTimeout(() => this.stop(), this._totalTime);
+      this._intervalTimer = setInterval(this._tick.bind(this), TICK_MS);
+      this._stopTimer = setTimeout(this.stop.bind(this), this._totalTime);
       this.onStart();
       this.onChange();
     }
@@ -114,7 +114,7 @@ class Timer {
   }
 }
 
-const gen5Timer = new Timer({
+var gen5Timer = new Timer({
   onStart () {
     gen5StartButton.innerHTML = 'Stop';
   },
@@ -130,11 +130,11 @@ const gen5Timer = new Timer({
 
 gen5Timer.onChange();
 
-const initialGen4Times = calculateGen4Times();
-let gen4MinutesBeforeVal = Math.floor((initialGen4Times[0] + initialGen4Times[1]) / ONE_MINUTE_MS);
+var initialGen4Times = calculateGen4Times();
+var gen4MinutesBeforeVal = Math.floor((initialGen4Times[0] + initialGen4Times[1]) / ONE_MINUTE_MS);
 gen4MinutesBefore.innerHTML = gen4MinutesBeforeVal;
 
-const gen4Timer1 = new Timer({
+var gen4Timer1 = new Timer({
   onStart () {
     gen4StartButton.innerHTML = 'Stop';
   },
@@ -152,7 +152,7 @@ const gen4Timer1 = new Timer({
   totalTime: initialGen4Times[0]
 });
 
-const gen4Timer2 = new Timer({
+var gen4Timer2 = new Timer({
   onStart () {
     gen4TimeRemaining1.innerHTML = getFormattedTime(this.getTotalTime());
     gen4TimeRemaining2.innerHTML = getFormattedTime(0);
@@ -201,7 +201,7 @@ function getGen5CalibrationOffset (targetSec, result) {
 }
 
 function calculateGen5TotalTime () {
-  let time = getGen5Time(+gen5CalibrationInput.value, +gen5TargetSecondsInput.value);
+  var time = getGen5Time(+gen5CalibrationInput.value, +gen5TargetSecondsInput.value);
   if (time < MINIMUM_TIME_MS) {
     time += ONE_MINUTE_MS;
   }
@@ -217,8 +217,8 @@ function updateGen5TotalTime () {
 
 // eslint-disable-next-line
 function updateGen5Calibration () {
-  const targetSec = +gen5TargetSecondsInput.value;
-  const secondHit = +gen5SecondHitInput.value;
+  var targetSec = +gen5TargetSecondsInput.value;
+  var secondHit = +gen5SecondHitInput.value;
   if (Number.isFinite(targetSec) && Number.isFinite(secondHit)) {
     gen5CalibrationInput.value = +gen5CalibrationInput.value + getGen5CalibrationOffset(targetSec, secondHit);
     updateGen5TotalTime();
@@ -226,12 +226,12 @@ function updateGen5Calibration () {
 }
 
 function calculateGen4Times () {
-  const targetSec = +gen4TargetSecondsInput.value;
-  const targetDelay = +gen4TargetDelayInput.value;
-  const calibratedDelay = +gen4CalibratedDelayInput.value;
-  const calibratedSeconds = +gen4CalibratedSecondsInput.value;
-  const secondTimeMs = toMs(targetDelay * 1000 - calibratedDelay * 1000) + calibratedSeconds * 1000;
-  let firstTimeMs = ((targetSec * 1000 - secondTimeMs) % ONE_MINUTE_MS + ONE_MINUTE_MS) % ONE_MINUTE_MS + 200;
+  var targetSec = +gen4TargetSecondsInput.value;
+  var targetDelay = +gen4TargetDelayInput.value;
+  var calibratedDelay = +gen4CalibratedDelayInput.value;
+  var calibratedSeconds = +gen4CalibratedSecondsInput.value;
+  var secondTimeMs = toMs(targetDelay * 1000 - calibratedDelay * 1000) + calibratedSeconds * 1000;
+  var firstTimeMs = ((targetSec * 1000 - secondTimeMs) % ONE_MINUTE_MS + ONE_MINUTE_MS) % ONE_MINUTE_MS + 200;
   if (firstTimeMs < MINIMUM_TIME_MS) {
     firstTimeMs += ONE_MINUTE_MS;
   }
@@ -240,7 +240,7 @@ function calculateGen4Times () {
 
 // eslint-disable-next-line
 function updateGen4Times () {
-  const totalTimes = calculateGen4Times();
+  var totalTimes = calculateGen4Times();
   gen4Timer1.setTotalTime(totalTimes[0]);
   gen4Timer2.setTotalTime(totalTimes[1]);
   gen4MinutesBeforeVal = Math.floor((totalTimes[0] + totalTimes[1]) / ONE_MINUTE_MS);
@@ -252,8 +252,8 @@ function updateGen4Times () {
 
 // eslint-disable-next-line
 function updateGen4Calibration () {
-  const targetDelay = +gen4TargetDelayInput.value;
-  const delayHit = +gen4DelayHitInput.value;
+  var targetDelay = +gen4TargetDelayInput.value;
+  var delayHit = +gen4DelayHitInput.value;
   if (Number.isFinite(targetDelay) && Number.isFinite(delayHit)) {
     gen4CalibratedDelayInput.value = +gen4CalibratedDelayInput.value + Math.round((delayHit - targetDelay) / 2)
   }
@@ -262,7 +262,7 @@ function updateGen4Calibration () {
 
 // eslint-disable-next-line
 function updateCountdownOptions () {
-  const isDisabled = !countdownCheckbox.checked;
+  var isDisabled = !countdownCheckbox.checked;
   soundTypeDropdown.disabled = isDisabled;
   numSoundsInput.disabled = isDisabled;
   soundsIntervalInput.disabled = isDisabled;
